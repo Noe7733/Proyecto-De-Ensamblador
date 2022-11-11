@@ -9,4 +9,4 @@ Colabordores:
 2) Gómez Alvarado Alejandro
 3) Guillen Gerardo Noé
 4) Nájera Verdugo Álvaro
-@Jeannette-Sachez11
+5) Sánchez Hernández Jeannette
