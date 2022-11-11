@@ -73,7 +73,7 @@ DATA SEGMENT
     nombre DB 30d dup('$')  ; se le asignan solo 13 caracteres en la cadena
     handle DW 0D; variable para registros  y que no se pierdan los registros
     aux DW  0d ;variable para auxiliar los registros
-    vec DB 50d dup('$')    
+    vec DB 50d dup('$') ;guarda lo que se va a escribir en un archivo   
     des1 DB "Seguro de realizar este cambio s/n?: $"
     contenidoArchi DB "Contenido: $"
     opc DB 0
@@ -277,7 +277,6 @@ CODE SEGMENT
             macroColor 01101111B, 00D, 00D, 25D, 79D 
             macroPosiciones 02D,00D, cadeArchi16 
             macroPosiciones 04D,00D, cadeArchi10  
-           ; macroImpSPos cadeArchi10
             CALL CICLOP
             
             Abrir_archivo:
@@ -311,10 +310,8 @@ CODE SEGMENT
         ;Etiqueta para la opcion de escribir un archivo
         Update_file:   
             macroClear
-            macroColor 01101111B, 00D, 00D, 25D, 79D 
-           ; macroPosiciones 02D,02D, cadeArchi16  
+            macroColor 01101111B, 00D, 00D, 25D, 79D   
             macroPosiciones 04D,02D, cadeArchi14  
-            ;macroImpSPos cadeArchi14
             MOV SI,0;0 Movemos al puntero de pila en 0
             
                Pedir:
@@ -371,11 +368,7 @@ CODE SEGMENT
             cmp opc, 110
             je opcCancelada
             
-            macroCierreArchi
-            
-           ; mov ah, 09h
-           ; mov dx, offset cadeArchi10
-           ; int 21h      
+            macroCierreArchi      
             macroPosiciones 04D, 02D, cadeArchi10
             
             CALL CICLOP
@@ -518,11 +511,7 @@ CODE SEGMENT
     
     Hoja_Presentacion: 
     
-        macroColor 10110000B, 00D, 00D, 25D, 79D
-        ;macroColor 011110000b,0d,0d,25d,1d
-        ;macroColor 011110000b,24d,0d,25d,60d ;blanco abajo
-        ;macroColor 011110000b,0d,1d,0d,60d
-        ;macroColor 011110000b,0d,60d,25d,61d ;blanco  
+        macroColor 10110000B, 00D, 00D, 25D, 79D 
         
         macroPosiciones 02D, 07D, CadeP1 
         macroPosiciones 03D, 07D, CadeP2
@@ -626,7 +615,6 @@ CODE SEGMENT
     Submenu:
         macroClear
         macroColor 11110000B, 00D, 62D, 10D, 79D 
-        ;macroColor 11110000B, 00D, 62D, 24D, 79D
         macroPosiciones 01D, 63D, cadeSub0
         macroPosiciones 02D, 63D, cadeSub1
         macroPosiciones 03D, 63D, cadeSub2
