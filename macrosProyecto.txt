@@ -1,0 +1,124 @@
+;macro para imprimir cadenas
+    macroPosiciones MACRO x, y, cad 
+        MOV AH, 02H
+        MOV BH, 0H
+        MOV DH, x ; fila = posicion del cursor con respecto a las filas
+        MOV DL, y ; columna = posicion del cursor con respecto a las columnas
+        INT 10H
+        MOV DX, OFFSET cad
+        MOV AH, 09H
+        int 21h
+    ENDM
+
+;macro para pedir datos por teclado
+
+	macroPedirDatos MACRO x, y, cadeMostrar, numIndice
+
+    		MOV AH, 02H
+    		MOV BH, 0H
+   		MOV DH, x ;ESTA LINEA ES LA ENCARGADA DE POSICIONAR EL CURSOR(FILA)
+    		MOV DL, y ;ESTA LINEA ES LA ENCARGADA DE POSICIONAR EL CURSOR(COLUMNA)
+    		INT 10H
+
+    		MOV AH, 09H,
+    		LEA DX, cadeMostrar ;GUARDA EL NUMERO QUE RECIBE DEL TECLADO, LO GUARDA EN CADENUM1
+   	 	INT 21H
+    		MOV AH, 01
+    		int 21h
+    		sub AL, 30h
+    		mov numIndice,AL ;AQUI LO MUEVE A num1
+
+	ENDM
+
+;macro para pedir datos en la parte de los archivos
+
+	macroPedirDatosA MACRO x, y, cadeMostarA
+    		MOV AH, 02H
+    		MOV BH, 0H
+   		MOV DH, x ;ESTA LINEA ES LA ENCARGADA DE POSICIONAR EL CURSOR(FILA)
+    		MOV DL, y ;ESTA LINEA ES LA ENCARGADA DE POSICIONAR EL CURSOR(COLUMNA)
+    		INT 10H
+
+    		MOV AH, 09H,
+    		LEA DX, cadeMostarA ;GUARDA EL NUMERO QUE RECIBE DEL TECLADO, LO GUARDA EN CADENUM1
+   	 	INT 21H
+    		MOV AH, 01H
+    		int 21h
+	ENDM
+;macro para cerrar un archivo 
+
+	macroCierreArchi MACRO 
+		MOV BX, AX
+		MOV AH, 3EH
+		INT 21H
+	ENDM
+
+;macro para imprimir sin declarar posiciones
+	macroImpSPos MACRO cadena
+		MOV AH, 09H
+		MOV DX, OFFSET cadena
+		INT 21H
+	ENDM
+
+;macro para la limpieza de la pantalla con ayuda de la interrupcion 10H, usando la funcion 02H
+
+	macroClear MACRO
+		MOV AH, 02H
+		MOV DX, 0000,0000
+		INT 10H
+	ENDM
+
+;MACRO PARA DAR COLOR
+    macroColor MACRO colorFondo,a, x, b, y ;a=inicio colum, b=fin colum, x = inicio fila, y= fin fila
+        MOV AX, 0600H
+        MOV BH, colorFondo
+        MOV CH, a
+        MOV CL, x
+        MOV DH, b
+        MOV DL, y
+        INT 10H
+    ENDM 
+
+;macro para imprimir los resultados de las operaciones de dos digitos
+	macroRes MACRO mostrar, res
+    		MOV AH, 09
+    		LEA DX, mostrar
+    		INT 21H
+    		MOV DL, res
+    		ADD DL, 30H
+    		MOV AH, 02H
+    		INT 21H
+	ENDM
+
+PedirLetraM MACRO x,y,Cadena,variable
+	   MOV AH, 02H
+    	   MOV BH, 0H
+   	   MOV DH, x ;ESTA LINEA ES LA ENCARGADA DE POSICIONAR EL CURSOR(FILA)
+             MOV DL, y ;ESTA LINEA ES LA ENCARGADA DE POSICIONAR EL CURSOR(COLUMNA)
+             INT 10H
+
+	   MOV AH, 09h
+             LEA DX,Cadena
+             INT 21H
+             MOV AH,01H ;solicitamos digito para elegir opcion
+             INT 21H
+             MOV variable, AL
+             MOV AH,02H
+             MOV DL,0AH; SALTO DE LINEA
+             INT 21H
+
+	ENDM
+
+;macro para el submenu de archivos
+
+macroSubArchi MACRO opcBrincar
+            macroPosiciones 14D, 02D, cadeArchi11
+            macroPosiciones 15D, 02D, cadeArchi12 
+            macroPosiciones 16D, 02D, cadeArchi13   
+            PedirLetraM 17d, 02d, cadeResArchi, LetraAr
+            CMP LetraAr,73h; 73h s EN CODIGO ASCI
+            JE  opcBrincar
+            CMP LetraAr,72h;72h valor de r en codigo ASCI  
+            JE  Operaciones_archivos
+ENDM
+
