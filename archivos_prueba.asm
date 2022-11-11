@@ -83,7 +83,7 @@ DATA SEGMENT
     ;Cadena de mensaje para el pino de navidad
     Mensaje4 db 'Bota de navidad $' 
     Mensaje5 db 'Feliz navidad y $' 
-    Mensaje6 db 'Prospero anio nuevo $'
+    Mensaje6 db 'Prospero anio nuevo $'                                          
     Mensaje7 db '2023 $'
     Mensaje8 db '*   *   *   *   *   *   *   *   *   *   *   *   *   *   * $'     
     Aum DB 0D
