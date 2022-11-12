@@ -4,9 +4,5 @@ En este proyecto se da solución a la problematica planteda como proyecto final 
 Este mismo nos deja un valioso aprendizeja sobre la materia misma.
 
 Colabordores:
-</a>
-      <span data-view-component="true" class="flex-self-center min-width-0 css-truncate css-truncate-overflow width-fit flex-auto">
-        <a href="https://github.com/Noe7733" class="Link--primary no-underline flex-self-center">
-          <strong>Noe7733</strong>
-          <span class="color-fg-muted">Noé Guillen Gerardo</span>
-        </a>
+<li><a href="https://github.com/Noe7733">@Noe7733</a></li>
+<li><a href="https://github.com/Jeannette-Sachez11">@Jeannette-Sachez11</a></li>
