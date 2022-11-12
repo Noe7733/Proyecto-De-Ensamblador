@@ -6,7 +6,7 @@ Este mismo nos deja un valioso aprendizeja sobre la materia misma.
 Colabordores:
 
 1) Culebro Ovando Paola Jadziry
-<a href="https://github.com/alvaraduo" class="Link--primary no-underline flex-self-center">https://github.com/alvaraduo
+<a href="https://github.com/alvaraduo" class="Link--primary no-underline flex-self-center">
 -Alvaraduo
 <a href="https://github.com/Noe7733" class="Link--primary no-underline flex-self-center">
 -Noe7733
