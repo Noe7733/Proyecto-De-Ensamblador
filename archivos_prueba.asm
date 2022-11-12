@@ -266,7 +266,8 @@ CODE SEGMENT
             MOV CX, 0  ;0
             MOV DX, OFFSET ruta; le asignamos la ruta en donde se va a crear
             INT 21H              
-            MOV handle,ax
+            MOV handle,ax  
+            MOV BX,AX
             macroCierreArchi
             macroPosiciones 07D,04D ,cadeArchi5 
             macroSubArchi Create_file
@@ -324,6 +325,8 @@ CODE SEGMENT
                 Jb Pedir
                   
                 macroPedirDatosA 06D, 02D, des1
+                MOV AH, 01H
+                INT 21H
                 MOV numArchi, AL
                 MOV AH, 02H
                 MOV DL, 0AH
@@ -332,7 +335,8 @@ CODE SEGMENT
                 JE opcCancelada
              
                Editar:
-                PUSH SI 
+                PUSH SI
+                MOV SI,3 
                 macroPosiciones 08D,02D, cadeArchi16  
                 macroPosiciones 10D,02D, cadeArchi10
                 CALL CICLOP
@@ -358,12 +362,12 @@ CODE SEGMENT
         ;Etiqueta para la opcion de Eliminar un archivo 
         Delete_file: 
             macroClear
-            macroColor 01101111B, 00D, 00D, 25D, 79D 
-            macroPosiciones 02D,02D, cadeArchi16   
+            macroColor 01101111B, 00D, 00D, 25D, 79D
             mov opc, al
             mov ah, 02h
             mov dl, 0ah
             int 21h
+            macroPosiciones 02D,02D, cadeArchi16
             
             cmp opc, 110
             je opcCancelada
@@ -379,6 +383,9 @@ CODE SEGMENT
             int 21h
             mov handle, ax
             macroPosiciones 06D, 02D, cadeArchi8
+
+
+            
             macroSubArchi Delete_file    
              
         ;Etiqueta de submenu de archivos
@@ -642,7 +649,7 @@ CODE SEGMENT
 
 ;proceso que realiza la llamada al ciclo que guarda el nombre del archivo
 CICLOP PROC NEAR
-    MOV SI,3d;mueve el puntero a la pocision 3
+    MOV SI,3;mueve el puntero a la pocision 3
     CALL Ciclo_ar ;llamamos a la etiqueta Ciclo_Ar
     RET
 CICLOP ENDP 

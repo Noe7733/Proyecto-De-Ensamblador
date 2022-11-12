@@ -48,7 +48,6 @@
 ;macro para cerrar un archivo 
 
 	macroCierreArchi MACRO 
-		MOV BX, AX
 		MOV AH, 3EH
 		INT 21H
 	ENDM
