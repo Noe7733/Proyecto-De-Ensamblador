@@ -1,0 +1,1080 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+archivos_prueba.exe -- emu8086 assembler version: 4.08  
+ 
+[ 12/11/2022  --  10:15:13 a. m. ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       
+[   2]        :                                       include macrosProyecto.txt ;Importacion del archivo (.txt) que contiene las macros a emplear
+[   3]        :                                       
+[   4]        :                                       SGPILA SEGMENT PARA STACK 'PILA'
+[   5]        :                                       
+[   6]        :                                       SGPILA ENDS
+[   7]        :                                       
+[   8]        :                                       ;Inicio del segmento de datos
+[   9]        :                                       DATA SEGMENT
+[  10]        :                                       
+[  11]        :                                       ;variables para el funcionamiento del menu
+[  12]    0000: 20 42 49 45 4E 56 45 4E 49 44 4F 20   CADE DB " BIENVENIDO AL MENU PRINCIPAL:) ",0DH, 0AH, "$"
+                41 4C 20 4D 45 4E 55 20 50 52 49 4E 
+                43 49 50 41 4C 3A 29 20 0D 0A 24    
+[  13]    0023: 30 2E 2D 20 48 6F 6A 61 20 64 65 20   CADE2 DB "0.- Hoja de presentacion :D", 0DH, 0AH, " 1.- Comparaciones de numeros", 0DH, 0AH, " 2.- Operaciones con archivos", 0DH, 0AH," 3.- Bota navidenia", 0DH, 0AH, " 4.- Salir",0DH, 0AH,"$"
+                70 72 65 73 65 6E 74 61 63 69 6F 6E 
+                3A 44 0D 0A 20 31 2E 2D 20 43 6F 6D 
+                70 61 72 61 63 69 6F 6E 65 73 20 64 
+                65 20 6E 75 6D 65 72 6F 73 0D 0A 20 
+                32 2E 2D 20 4F 70 65 72 61 63 69 6F 
+                6E 65 73 20 63 6F 6E 20 61 72 63 68 
+                69 76 6F 73 0D 0A 20 33 2E 2D 20 42 
+                6F 74 61 20 6E 61 76 69 64 65 6E 69 
+                61 0D 0A 20 34 2E 2D 20 53 61 6C 69 
+                72 0D 0A 24                         
+[  14]    009F: 20 49 6E 67 72 65 73 61 72 20 64 65   cadePedirNumIndice DB " Ingresar de favor la opcion deseada: $" ;Es para guardar datos
+                20 66 61 76 6F 72 20 6C 61 20 6F 70 
+                63 69 6F 6E 20 64 65 73 65 61 64 61 
+                3A 20 24                            
+[  15]    00C6: 00                                    numIndice DB 0;Se le da un valor de cero, porque guarda el valor ingresado por teclado
+[  16]        :                                       
+[  17]        :                                       ;cadenas para el submenu
+[  18]    00C7: 51 75 65 20 64 65 73 65 61 20 68 61   cadeSub0 DB 'Que desea hacer? $'
+                63 65 72 3F 20 24                   
+[  19]    00D9: 31 2E 2D 20 52 65 74 72 6F 63 65 64   cadeSub1 DB '1.- Retroceder $'
+                65 72 20 24                         
+[  20]    00E9: 32 2E 2D 20 53 61 6C 69 72 20 24      cadeSub2 db '2.- Salir $'
+[  21]    00F4: 52 3D 20 24                           cadePedSub DB 'R= $'
+[  22]    00F8: 00                                    cadeNumSub DB 0
+[  23]        :                                       
+[  24]        :                                       ;variables para la impresion del mensajes de error
+[  25]    00F9: 4F 70 63 69 6F 6E 20 64 69 67 69 74   cadeError DB "Opcion digitada incorrecta", 0DH, 0AH, "$"
+                61 64 61 20 69 6E 63 6F 72 72 65 63 
+                74 61 0D 0A 24                      
+[  26]    0116: 44 69 67 69 74 61 72 20 64 65 20 6E   cadeError2 DB "Digitar de nuevo, de favor", 0DH, 0AH, "$"
+                75 65 76 6F 2C 20 64 65 20 66 61 76 
+                6F 72 0D 0A 24                      
+[  27]        :                                       
+[  28]        :                                       ;variables para el funcionamineto de la opcion1 comparaion de dos digito
+[  29]    0133: 49 6E 67 72 65 73 61 20 65 6C 20 70   CADE3 DB 'Ingresa el primer digito: $'
+                72 69 6D 65 72 20 64 69 67 69 74 6F 
+                3A 20 24                            
+[  30]    014E: 49 6E 67 72 65 73 61 20 65 6C 20 73   CADE4 DB 'Ingresa el segundo digito: $'
+                65 67 75 6E 64 6F 20 64 69 67 69 74 
+                6F 3A 20 24                         
+[  31]    016A: 0D 0A 45 6C 20 6E 75 6D 65 72 6F 20   mensaje1 db 13,10, 'El numero 1 es mayor que el numero 2! $'
+                31 20 65 73 20 6D 61 79 6F 72 20 71 
+                75 65 20 65 6C 20 6E 75 6D 65 72 6F 
+                20 32 21 20 24                      
+[  32]    0193: 0D 0A 45 6C 20 6E 75 6D 65 72 6F 20   mensaje2 db 13,10, 'El numero 1 es menor que numero 2!$'
+                31 20 65 73 20 6D 65 6E 6F 72 20 71 
+                75 65 20 6E 75 6D 65 72 6F 20 32 21 
+                24                                  
+[  33]    01B8: 0D 0A 4C 6F 73 20 6E 75 6D 65 72 6F   mensaje3 db 13,10, 'Los numeros son iguales!$'
+                73 20 73 6F 6E 20 69 67 75 61 6C 65 
+                73 21 24                            
+[  34]    01D3: 00                                    num1 DB ?
+[  35]    01D4: 00                                    num2 DB ?
+[  36]        :                                       
+[  37]        :                                       ;variables del submenu 2 en comparacion de numeros
+[  38]    01D5: 2A 2A 2A 43 6F 6D 70 61 72 61 63 69   Titulo DB "***Comparacion de dos numeros***$"
+                6F 6E 20 64 65 20 64 6F 73 20 6E 75 
+                6D 65 72 6F 73 2A 2A 2A 24          
+[  39]    01F6: 56 6F 6C 76 65 72 20 61 20 63 6F 6D   QUEDARSE DB 'Volver a comparar digitos(s)',10,13,'$'
+                70 61 72 61 72 20 64 69 67 69 74 6F 
+                73 28 73 29 0A 0D 24                
+[  40]    0215: 52 65 67 72 65 73 61 72 20 61 6C 20   EXIT DB 'Regresar al menu principal(d)',10,13,'$'
+                6D 65 6E 75 20 70 72 69 6E 63 69 70 
+                61 6C 28 64 29 0A 0D 24             
+[  41]    0235: 45 6C 65 67 69 72 20 75 6E 61 20 64   PREGUNTA DB 'Elegir una de las siguientes opciones:',10, 13,'$'
+                65 20 6C 61 73 20 73 69 67 75 69 65 
+                6E 74 65 73 20 6F 70 63 69 6F 6E 65 
+                73 3A 0A 0D 24                      
+[  42]    025E: 52 3D 20 24                           RESPUESTA DB 'R= $'
+[  43]    0262: 00                                    V1 DB ?
+[  44]        :                                       
+[  45]        :                                       
+[  46]        :                                       ;cadenas para el menu de archivos
+[  47]    0263: 4D 65 6E 75 20 64 65 20 61 72 63 68   cadeArchi0 DB "Menu de archivos xD", 0DH, 0AH,"$"
+                69 76 6F 73 20 78 44 0D 0A 24       
+[  48]    0279: 31 2E 2D 20 43 72 65 61 63 69 6F 6E   cadeArchi1 DB "1.- Creacion de un archivo.", 0DH, 0AH, "$"
+                20 64 65 20 75 6E 20 61 72 63 68 69 
+                76 6F 2E 0D 0A 24                   
+[  49]    0297: 32 2E 2D 20 4C 65 63 74 75 72 61 20   cadeArchi2 DB "2.- Lectura de un archivo.", 0DH, 0AH, "$"
+                64 65 20 75 6E 20 61 72 63 68 69 76 
+                6F 2E 0D 0A 24                      
+[  50]    02B4: 33 2E 2D 20 45 73 63 72 69 74 75 72   cadeArchi3 DB "3.- Escritura de un archivo.", 0DH, 0AH, "$"
+                61 20 64 65 20 75 6E 20 61 72 63 68 
+                69 76 6F 2E 0D 0A 24                
+[  51]    02D3: 34 2E 2D 20 45 6C 69 6D 69 6E 61 63   cadeArchi4 DB "4.- Eliminacion de un archivo.", 0DH, 0AH, "$"
+                69 6F 6E 20 64 65 20 75 6E 20 61 72 
+                63 68 69 76 6F 2E 0D 0A 24          
+[  52]    02F4: 49 6E 67 72 65 73 61 72 20 64 65 20   cadeResArchi DB "Ingresar de favor la opcion deseada: $"
+                66 61 76 6F 72 20 6C 61 20 6F 70 63 
+                69 6F 6E 20 64 65 73 65 61 64 61 3A 
+                20 24                               
+[  53]    031A: 00                                    numArchi DB 0
+[  54]    031B: 43 72 65 61 63 69 6F 6E 20 45 78 69   cadeArchi5 DB "Creacion Existosa!!", 0DH, 0AH, "$"
+                73 74 6F 73 61 21 21 0D 0A 24       
+[  55]    0331: 4C 65 63 74 75 72 61 20 45 78 69 73   cadeArchi6 DB "Lectura Existosa!!", 0DH, 0AH, "$"
+                74 6F 73 61 21 21 0D 0A 24          
+[  56]    0346: 45 73 63 72 69 74 75 72 61 20 45 78   cadeArchi7 DB "Escritura Existosa!!", 0DH, 0AH, "$"
+                69 73 74 6F 73 61 21 21 0D 0A 24    
+[  57]    035D: 45 6C 69 6D 69 6E 61 63 69 6F 6E 20   cadeArchi8 DB "Eliminacion Existosa!!", 0DH, 0AH, "$"
+                45 78 69 73 74 6F 73 61 21 21 0D 0A 
+                24                                  
+[  58]    0376: 35 2E 2D 20 52 65 67 72 65 73 61 72   cadeArchi9 DB "5.- Regresar al menu principal***", 0DH, 0AH, "$"
+                20 61 6C 20 6D 65 6E 75 20 70 72 69 
+                6E 63 69 70 61 6C 2A 2A 2A 0D 0A 24 
+                                                    
+[  59]    039A: 49 6E 67 72 65 73 61 20 65 6C 20 6E   cadeArchi10 DB "Ingresa el nombre del archivo: $"
+                6F 6D 62 72 65 20 64 65 6C 20 61 72 
+                63 68 69 76 6F 3A 20 24             
+[  60]    03BA: 44 65 73 65 61 20 72 65 61 6C 69 7A   cadeArchi11 DB "Desea realizar la misma opcion?", 0DH, 0AH,"$"
+                61 72 20 6C 61 20 6D 69 73 6D 61 20 
+                6F 70 63 69 6F 6E 3F 0D 0A 24       
+[  61]    03DC: 53 69 20 28 73 29 0D 0A 24            cadeArchi12 DB "Si (s)", 0DH, 0AH,"$"
+[  62]    03E5: 52 65 67 72 65 73 61 72 20 28 72 29   cadeArchi13 DB "Regresar (r)", 0DH, 0AH,"$"
+                0D 0A 24                            
+[  63]    03F4: 49 6E 67 72 65 73 61 20 65 6C 20 63   cadeArchi14 DB "Ingresa el contenido del archivo:$"
+                6F 6E 74 65 6E 69 64 6F 20 64 65 6C 
+                20 61 72 63 68 69 76 6F 3A 24       
+[  64]    0416: 4F 70 65 72 61 63 69 6F 6E 20 43 61   cadeCancelada DB "Operacion Cancelada", 0DH, 0AH, "$"
+                6E 63 65 6C 61 64 61 0D 0A 24       
+[  65]    042C: 49 6E 67 72 65 73 61 72 20 65 6C 20   cadeArchi15 DB "Ingresar el nombre con.txt ejemplo:(nombre.txt)$"
+                6E 6F 6D 62 72 65 20 63 6F 6E 2E 74 
+                78 74 20 65 6A 65 6D 70 6C 6F 3A 28 
+                6E 6F 6D 62 72 65 2E 74 78 74 29 24 
+                                                    
+[  66]    045C: 49 6E 67 72 65 73 61 72 20 65 6C 20   cadeArchi16 DB "Ingresar el nombre con el que fue creado en la op.1", 0DH, 0AH,"$"
+                6E 6F 6D 62 72 65 20 63 6F 6E 20 65 
+                6C 20 71 75 65 20 66 75 65 20 63 72 
+                65 61 64 6F 20 65 6E 20 6C 61 20 6F 
+                70 2E 31 0D 0A 24                   
+[  67]        :                                       
+[  68]        :                                       
+[  69]        :                                       
+[  70]        :                                       
+[  71]        :                                       ;mensajes y variables que se utilizan en las operaciones con archivos
+[  72]    0492: 43 3A 5C 24 00                        ruta DB 'C',':','\','$',00H; Especifica la ruta en donde estara archivo
+[  73]    0497: 24 24 24 24 24 24 24 24 24 24 24 24   nombre DB 30d dup('$')  ; se le asignan solo 13 caracteres en la cadena
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24                   
+[  74]    04B5: 00 00                                 handle DW 0D; variable para registros  y que no se pierdan los registros
+[  75]    04B7: 00 00                                 aux DW  0d ;variable para auxiliar los registros
+[  76]    04B9: 24 24 24 24 24 24 24 24 24 24 24 24   vec DB 50d dup('$') ;guarda lo que se va a escribir en un archivo
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24 24 24 24 24 24 24 24 24 24 24 
+                24 24                               
+[  77]    04EB: 53 65 67 75 72 6F 20 64 65 20 72 65   des1 DB "Seguro de realizar este cambio s/n?: $"
+                61 6C 69 7A 61 72 20 65 73 74 65 20 
+                63 61 6D 62 69 6F 20 73 2F 6E 3F 3A 
+                20 24                               
+[  78]    0511: 43 6F 6E 74 65 6E 69 64 6F 3A 20 24   contenidoArchi DB "Contenido: $"
+                                                    
+[  79]    051D: 00                                    opc DB 0
+[  80]    051E: 00                                    letraAr DB ?
+[  81]        :                                       
+[  82]        :                                       
+[  83]        :                                       ;Cadena de mensaje para el pino de navidad
+[  84]    051F: 42 6F 74 61 20 64 65 20 6E 61 76 69   Mensaje4 db 'Bota de navidad $'
+                64 61 64 20 24                      
+[  85]    0530: 46 65 6C 69 7A 20 6E 61 76 69 64 61   Mensaje5 db 'Feliz navidad y $'
+                64 20 79 20 24                      
+[  86]    0541: 50 72 6F 73 70 65 72 6F 20 61 6E 69   Mensaje6 db 'Prospero anio nuevo $'
+                6F 20 6E 75 65 76 6F 20 24          
+[  87]    0556: 32 30 32 33 20 24                     Mensaje7 db '2023 $'
+[  88]    055C: 2A 20 20 20 2A 20 20 20 2A 20 20 20   Mensaje8 db '*   *   *   *   *   *   *   *   *   *   *   *   *   *   * $'
+                2A 20 20 20 2A 20 20 20 2A 20 20 20 
+                2A 20 20 20 2A 20 20 20 2A 20 20 20 
+                2A 20 20 20 2A 20 20 20 2A 20 20 20 
+                2A 20 20 20 2A 20 20 20 2A 20 24    
+[  89]    0597: 00                                    Aum DB 0D
+[  90]        :                                       
+[  91]        :                                       ;cadenas para la hoja de presentacion
+[  92]    0598: 55 6E 69 76 65 72 69 73 69 64 61 64   CadeP1 DB "Univerisidad Autonoma de Chiapas$"
+                20 41 75 74 6F 6E 6F 6D 61 20 64 65 
+                20 43 68 69 61 70 61 73 24          
+[  93]    05B9: 43 61 6D 70 75 73 20 49 56 24         CadeP2 DB "Campus IV$"
+[  94]    05C3: 54 72 61 64 75 63 74 6F 72 65 73 20   CadeP3 DB "Traductores de bajo nivel$"
+                64 65 20 62 61 6A 6F 20 6E 69 76 65 
+                6C 24                               
+[  95]    05DD: 50 72 6F 79 65 63 74 6F 20 46 69 6E   CadeP4 DB "Proyecto Final$"
+                61 6C 24                            
+[  96]    05EC: 35 2D 44 24                           CadeP5 DB "5-D$"
+[  97]    05F0: 49 6E 74 65 67 72 61 6E 74 65 73 3A   CadeP6 DB "Integrantes:$"
+                24                                  
+[  98]    05FD: 50 61 6F 6C 61 20 4A 61 64 7A 69 72   CadeP7 DB "Paola Jadziry Culebro Ovando$"
+                79 20 43 75 6C 65 62 72 6F 20 4F 76 
+                61 6E 64 6F 24                      
+[  99]    061A: 41 6C 65 6A 61 6E 64 72 6F 20 47 6F   CadeP8 DB "Alejandro Gomez Alvarado$"
+                6D 65 7A 20 41 6C 76 61 72 61 64 6F 
+                24                                  
+[ 100]    0633: 4E 6F 65 20 47 75 69 6C 6C 65 6E 20   CadeP9 DB "Noe Guillen Gerardo$"
+                47 65 72 61 72 64 6F 24             
+[ 101]    0647: 41 6C 76 61 72 6F 20 4E 61 6A 65 72   CadeP10 DB "Alvaro Najera Verdugo$"
+                61 20 56 65 72 64 75 67 6F 24       
+[ 102]    065D: 4A 65 61 6E 6E 65 74 74 65 20 53 61   CadeP11 DB "Jeannette Sanchez Hernandez$"
+                6E 63 68 65 7A 20 48 65 72 6E 61 6E 
+                64 65 7A 24                         
+[ 103]        :                                       
+[ 104]        :                                       DATA ENDS
+[ 105]        :                                       ;Fin del segmento de datos
+[ 106]        :                                       
+[ 107]        :                                       ;Inicio del segmento de codigo
+[ 108]        :                                       CODE SEGMENT
+[ 109]        :                                       
+[ 110]        :                                       ASSUME DS:DATA, CS: CODE ;Assume = asume que es el segmento de datos es "DATA"
+[ 111]        :                                       ; y el segmento de codigo es "CODE"
+[ 112]        :                                       
+[ 113]    0680:                                       INICIO:
+[ 114]        :                                       ;Inicio del segmento prefijo del programa
+[ 115]    0680: B8 00 00                              MOV AX, DATA
+[ 116]    0683: 8E D8                                 MOV DS, AX
+[ 117]        :                                       ;Fin del segmento prefijo del programa
+[ 118]        :                                       
+[ 119]        :                                       ;Etiqueta para la seccion del menu principal
+[ 120]    0685:                                       Menu_principal:
+[ 121]    0685: B8 00 06 B7 6F B5 00 B1 00 B6 19 B2   macroColor 01101111B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 122]    0694: B4 02 B7 00 B6 01 B2 15 CD 10 BA 00   macroPosiciones 01D, 21D, CADE
+                00 B4 09 CD 21                      
+[ 123]    06A5: B4 02 B7 00 B6 04 B2 01 CD 10 BA 23   macroPosiciones 04D, 01D, CADE2
+                00 B4 09 CD 21                      
+[ 124]    06B6: B4 02 B7 00 B6 09 B2 00 CD 10 B4 09   macroPedirDatos 09d, 00D, cadePedirNumIndice, numIndice ;Imprime la cadena en una poscion establecida y luego pide un dato por teclado
+                BA 9F 00 CD 21 B4 01 CD 21 2C 30 A2 
+                C6 00                               
+[ 125]    06D0: EB 00                                 JMP Comparaciones_principales
+[ 126]        :                                       
+[ 127]        :                                       ;Etiqueta para la seccion de comparaciones_principales
+[ 128]    06D2:                                       Comparaciones_principales:
+[ 129]        :                                       
+[ 130]    06D2: 80 3E C6 00 00                        CMP numIndice, 0D ;Compara lo que contenga numIndice con 0D
+[ 131]    06D7: 75 03 E9 1F 0A                        JE Hoja_presentacion ;Salta a la etiqueta Opcion_incorrecta
+[ 132]    06DC: 80 3E C6 00 01                        CMP numIndice, 1D ;Compara lo que contenga numIndice con 1D
+[ 133]    06E1: 75 03 E9 31 01                        JE Comparaciones_numeros ;Salta a la etiqueta Comparaciones_numeros
+[ 134]    06E6: 80 3E C6 00 02                        CMP numIndice, 2D ;Compara lo que contenga numIndice con 2D
+[ 135]    06EB: 75 03 E9 0C 02                        JE Operaciones_archivos ;Salta a la etiqueta Operaciones_archivos
+[ 136]    06F0: 80 3E C6 00 03                        CMP numIndice, 3D ;Compara lo que contenga numIndice con 3D
+[ 137]    06F5: 75 03 E9 5F 06                        JE Bota_navidenia ;Salta a la etiqueta Bota_navidenia
+[ 138]    06FA: 80 3E C6 00 04                        CMP numIndice, 4D ;Compara lo que contenga numIndice con 4D
+[ 139]    06FF: 75 03 E9 16 0F                        JE Salir          ;Salta a la etiqueta Salir
+[ 140]    0704: 80 3E C6 00 05                        CMP numIndice, 5D ;Compara lo que contenga numIndice con 5D
+[ 141]    0709: 75 03 E9 D1 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 142]    070E: 80 3E C6 00 06                        CMP numIndice, 6D ;Compara lo que contenga numIndice con 6D
+[ 143]    0713: 75 03 E9 C7 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 144]    0718: 80 3E C6 00 07                        CMP numIndice, 7D ;Compara lo que contenga numIndice con 7D
+[ 145]    071D: 75 03 E9 BD 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 146]    0722: 80 3E C6 00 08                        CMP numIndice, 8D ;Compara lo que contenga numIndice con 8D
+[ 147]    0727: 75 03 E9 B3 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 148]    072C: 80 3E C6 00 09                        CMP numIndice, 9D ;Compara lo que contenga numIndice con 9D
+[ 149]    0731: 75 03 E9 A9 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 150]        :                                       ;Comparaciones_secundarias:
+[ 151]    0736:                                       Comparaciones_secundarias:
+[ 152]        :                                       
+[ 153]    0736: 80 3E F8 00 00                        CMP cadeNumSub, 0D ;Compara lo que contenga cadeNumSub con 0D
+[ 154]    073B: 75 03 E9 9F 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 155]    0740: 80 3E F8 00 01                        CMP cadeNumSub, 1D ;Compara lo que contenga cadeNumSub con 1D
+[ 156]    0745: B4 02 BA 00 00 CD 10                  macroClear
+[ 157]    074C: B8 00 06 B7 0F B5 00 B1 00 B6 19 B2   macroColor 00001111B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 158]    075B: 75 03 E9 25 FF                        JE Menu_principal ;Salta a la etiqueta Menu_principal
+[ 159]    0760: 80 3E F8 00 02                        CMP cadeNumSub, 2D ;Compara lo que contenga cadeNumSub con 2D
+[ 160]    0765: 75 03 E9 B0 0E                        JE Salir           ;Salta a la etiqueta Salir
+[ 161]    076A: 80 3E F8 00 03                        CMP cadeNumSub, 3D ;Compara lo que contenga cadeNumSub con 3D
+[ 162]    076F: 75 03 E9 6B 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 163]    0774: 80 3E F8 00 04                        CMP cadeNumSub, 4D ;Compara lo que contenga cadeNumSub con 4D
+[ 164]    0779: 75 03 E9 61 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 165]    077E: 80 3E F8 00 05                        CMP cadeNumSub, 5D ;Compara lo que contenga cadeNumSub con 5D
+[ 166]    0783: 75 03 E9 57 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 167]    0788: 80 3E F8 00 06                        CMP cadeNumSub, 6D ;Compara lo que contenga cadeNumSub con 6D
+[ 168]    078D: 75 03 E9 4D 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 169]    0792: 80 3E F8 00 07                        CMP cadeNumSub, 7D ;Compara lo que contenga cadeNumSub con 7D
+[ 170]    0797: 75 03 E9 43 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 171]    079C: 80 3E F8 00 08                        CMP cadeNumSub, 8D ;Compara lo que contenga cadeNumSub con 8D
+[ 172]    07A1: 75 03 E9 39 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 173]    07A6: 80 3E F8 00 09                        CMP cadeNumSub, 9D ;Compara lo que contenga cadeNumSub con 9D
+[ 174]    07AB: 75 03 E9 2F 0E                        JE Opcion_incorrecta ;Salta a la etiqueta Opcion_incorrecta
+[ 175]        :                                       
+[ 176]        :                                       ;Comparaciones de archivos
+[ 177]    07B0:                                       CMP_Archivos:
+[ 178]    07B0: 80 3E 1A 03 00                        CMP numArchi, 0D
+[ 179]    07B5: 75 03 E9 25 0E                        JE Opcion_incorrecta
+[ 180]    07BA: 80 3E 1A 03 01                        CMP numArchi, 1D
+[ 181]    07BF: 75 03 E9 D1 01                        JE Create_file
+[ 182]    07C4: 80 3E 1A 03 02                        CMP numArchi, 2D
+[ 183]    07C9: 75 03 E9 8B 02                        JE Read_file
+[ 184]    07CE: 80 3E 1A 03 03                        CMP numArchi, 3D
+[ 185]    07D3: 75 03 E9 69 03                        JE Update_file
+[ 186]    07D8: 80 3E 1A 03 04                        CMP numArchi, 4D
+[ 187]    07DD: 75 03 E9 88 04                        JE Delete_file
+[ 188]    07E2: 80 3E 1A 03 05                        CMP numArchi, 5D
+[ 189]    07E7: 75 03 E9 99 FE                        JE  Menu_principal
+[ 190]    07EC: 80 3E 1A 03 06                        CMP numArchi, 6D
+[ 191]    07F1: 75 03 E9 E9 0D                        JE Opcion_incorrecta
+[ 192]    07F6: 80 3E 1A 03 07                        CMP numArchi, 7D
+[ 193]    07FB: 75 03 E9 DF 0D                        JE Opcion_incorrecta
+[ 194]    0800: 80 3E 1A 03 08                        CMP numArchi, 8D
+[ 195]    0805: 75 03 E9 D5 0D                        JE Opcion_incorrecta
+[ 196]    080A: 80 3E 1A 03 09                        CMP numArchi, 9D
+[ 197]    080F: 75 03 E9 CB 0D                        JE Opcion_incorrecta
+[ 198]    0814: E9 62 0D                              JMP Submenu
+[ 199]        :                                       
+[ 200]        :                                       ;Etiqueta para la seccion de las comparaciones de los numeros
+[ 201]    0817:                                       Comparaciones_numeros:
+[ 202]    0817: B4 02 BA 00 00 CD 10                  macroClear
+[ 203]    081E: B8 00 06 B7 6F B5 00 B1 00 B6 19 B2   macroColor 01101111B, 00D, 00D, 25D, 79D;pinta el fondo de color cafe
+                4F CD 10                            
+[ 204]    082D: B4 02 B7 00 B6 01 B2 15 CD 10 BA D5   macroPosiciones 01D, 21D, Titulo;Titulo
+                01 B4 09 CD 21                      
+[ 205]    083E: B4 02 B7 00 B6 04 B2 02 CD 10 B4 09   macroPedirDatos 04D, 02D, cade3, num1; pide el numero 1
+                BA 33 01 CD 21 B4 01 CD 21 2C 30 A2 
+                D3 01                               
+[ 206]    0858: B4 02 B7 00 B6 05 B2 02 CD 10 B4 09   macroPedirDatos 05D, 02D, cade4, num2 ;pide el numero 2
+                BA 4E 01 CD 21 B4 01 CD 21 2C 30 A2 
+                D4 01                               
+[ 207]    0872: 38 06 D3 01                           CMP num1,al  ;compara el numero
+[ 208]    0876: 77 04                                 JA EsMayor  ; es mayor  el num 1
+[ 209]    0878: 72 0B                                 JB EsMenor   ;es menor el num2
+[ 210]    087A: 74 12                                 JE EsIgual  ;son iguales
+[ 211]        :                                       
+[ 212]    087C:                                       EsMayor:
+[ 213]        :                                       
+[ 214]    087C: B4 09                                 mov ah,09h
+[ 215]    087E: BA 6A 01                              lea dx,mensaje1
+[ 216]    0881: CD 21                                 int 21h
+[ 217]    0883: EB 12                                 jmp Submenu2
+[ 218]        :                                       
+[ 219]    0885:                                       EsMenor:
+[ 220]        :                                       
+[ 221]    0885: B4 09                                 mov ah,09h
+[ 222]    0887: BA 93 01                              lea dx,mensaje2
+[ 223]    088A: CD 21                                 int 21h
+[ 224]    088C: EB 09                                 jmp Submenu2
+[ 225]        :                                       
+[ 226]    088E:                                       EsIgual:
+[ 227]        :                                       
+[ 228]    088E: B4 09                                 mov ah,09h
+[ 229]    0890: BA B8 01                              lea dx,mensaje3
+[ 230]    0893: CD 21                                 int 21h
+[ 231]    0895: EB 00                                 jmp Submenu2
+[ 232]        :                                       
+[ 233]    0897:                                       Submenu2:
+[ 234]    0897: B4 02 B7 00 B6 0B B2 02 CD 10 BA F6   macroPosiciones 11D, 02D, quedarse
+                01 B4 09 CD 21                      
+[ 235]    08A8: B4 02 B7 00 B6 0C B2 02 CD 10 BA 15   macroPosiciones 12D, 02D, exit
+                02 B4 09 CD 21                      
+[ 236]    08B9: B4 02 B7 00 B6 0A B2 02 CD 10 BA 35   macroPosiciones 10d, 02d, PREGUNTA
+                02 B4 09 CD 21                      
+[ 237]    08CA: B4 02 B7 00 B6 0D B2 02 CD 10 B4 09   PedirLetraM 13D, 02D, RESPUESTA, V1
+                BA 5E 02 CD 21 B4 01 CD 21 A2 62 02 
+                B4 02 B2 0A CD 21                   
+[ 238]    08E8: 80 3E 62 02 73                        CMP V1,73H; S EN CODIGO ASCI
+[ 239]    08ED: 75 03 E9 25 FF                        JE  Comparaciones_numeros
+[ 240]    08F2: 80 3E 62 02 64                        CMP V1,64H;valor de d en codigo ASCI
+[ 241]    08F7: 75 03 E9 89 FD                        JE  Menu_principal
+[ 242]        :                                       
+[ 243]        :                                       ;Etiqueta para la seccion de las operaciones con archivos
+[ 244]    08FC:                                       Operaciones_archivos:
+[ 245]    08FC: B4 02 BA 00 00 CD 10                  macroClear
+[ 246]    0903: B8 00 06 B7 6F B5 00 B1 00 B6 19 B2   macroColor 01101111B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 247]    0912: B4 02 B7 00 B6 00 B2 19 CD 10 BA 63   macroPosiciones 00D, 25D, cadeArchi0
+                02 B4 09 CD 21                      
+[ 248]    0923: B4 02 B7 00 B6 02 B2 00 CD 10 BA 79   macroPosiciones 02D, 00D, cadeArchi1
+                02 B4 09 CD 21                      
+[ 249]    0934: B4 02 B7 00 B6 03 B2 00 CD 10 BA 97   macroPosiciones 03D, 00D, cadeArchi2
+                02 B4 09 CD 21                      
+[ 250]    0945: B4 02 B7 00 B6 04 B2 00 CD 10 BA B4   macroPosiciones 04D, 00D, cadeArchi3
+                02 B4 09 CD 21                      
+[ 251]    0956: B4 02 B7 00 B6 05 B2 00 CD 10 BA D3   macroPosiciones 05D, 00D, cadeArchi4
+                02 B4 09 CD 21                      
+[ 252]    0967: B4 02 B7 00 B6 06 B2 00 CD 10 BA 76   macroPosiciones 06D, 00D, cadeArchi9
+                03 B4 09 CD 21                      
+[ 253]    0978: B4 02 B7 00 B6 08 B2 00 CD 10 B4 09   macroPedirDatos 08D, 00D, cadeResArchi, numArchi
+                BA F4 02 CD 21 B4 01 CD 21 2C 30 A2 
+                1A 03                               
+[ 254]    0992: E9 1B FE                              JMP CMP_Archivos
+[ 255]        :                                       
+[ 256]        :                                       ;Etiqueta para la opcion de crear un archivo
+[ 257]    0995:                                       Create_file:
+[ 258]    0995: B4 02 BA 00 00 CD 10                  macroClear
+[ 259]    099C: B8 00 06 B7 6F B5 00 B1 00 B6 19 B2   macroColor 01101111B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 260]    09AB: B4 02 B7 00 B6 03 B2 04 CD 10 BA 2C   macroPosiciones 03D,04D, cadeArchi15
+                04 B4 09 CD 21                      
+[ 261]    09BC: B4 02 B7 00 B6 05 B2 04 CD 10 BA 9A   macroPosiciones 05D,04D ,cadeArchi10
+                03 B4 09 CD 21                      
+[ 262]        :                                       
+[ 263]    09CD: E8 4E 0C                              CALL CICLOP ; forma de llamar al procedimiento
+[ 264]        :                                       
+[ 265]    09D0: B4 3C                                 MOV AH,3CH ;llamamos a la funcion de crear archivo
+[ 266]    09D2: B9 00 00                              MOV CX, 0  ;0
+[ 267]    09D5: BA 92 04                              MOV DX, OFFSET ruta; le asignamos la ruta en donde se va a crear
+[ 268]    09D8: CD 21                                 INT 21H
+[ 269]    09DA: A3 B5 04                              MOV handle,ax
+[ 270]    09DD: 8B D8                                 MOV BX,AX
+[ 271]    09DF: B4 3E CD 21                           macroCierreArchi
+[ 272]    09E3: B4 02 B7 00 B6 07 B2 04 CD 10 BA 1B   macroPosiciones 07D,04D ,cadeArchi5
+                03 B4 09 CD 21                      
+[ 273]    09F4: B4 02 B7 00 B6 0E B2 02 CD 10 BA BA   macroSubArchi Create_file
+                03 B4 09 CD 21 B4 02 B7 00 B6 0F B2 
+                02 CD 10 BA DC 03 B4 09 CD 21 B4 02 
+                B7 00 B6 10 B2 02 CD 10 BA E5 03 B4 
+                09 CD 21 B4 02 B7 00 B6 11 B2 02 CD 
+                10 B4 09 BA F4 02 CD 21 B4 01 CD 21 
+                A2 1E 05 B4 02 B2 0A CD 21 80 3E 1E 
+                05 73 75 03 E9 46 FF 80 3E 1E 05 72 
+                75 03 E9 A3 FE                      
+[ 274]        :                                       
+[ 275]        :                                       ;Etiqueta para la opcion de leer un archivo
+[ 276]    0A59:                                       Read_file:
+[ 277]    0A59: B4 02 BA 00 00 CD 10                  macroClear
+[ 278]    0A60: B8 00 06 B7 6F B5 00 B1 00 B6 19 B2   macroColor 01101111B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 279]    0A6F: B4 02 B7 00 B6 02 B2 00 CD 10 BA 5C   macroPosiciones 02D,00D, cadeArchi16
+                04 B4 09 CD 21                      
+[ 280]    0A80: B4 02 B7 00 B6 04 B2 00 CD 10 BA 9A   macroPosiciones 04D,00D, cadeArchi10
+                03 B4 09 CD 21                      
+[ 281]    0A91: E8 8A 0B                              CALL CICLOP
+[ 282]        :                                       
+[ 283]    0A94:                                       Abrir_archivo:
+[ 284]        :                                       ;abertura del archivo
+[ 285]        :                                       
+[ 286]    0A94: B4 3D                                 MOV AH, 3DH;FUNCION PARA ABRIR EL ARCHIVO
+[ 287]    0A96: B0 00                                 MOV AL, 0H;INDICA QUE SE ABRIRA PARA SOLO LECTURA
+[ 288]    0A98: BA 92 04                              MOV DX, OFFSET ruta
+[ 289]    0A9B: CD 21                                 INT 21H
+[ 290]    0A9D: A3 B5 04                              MOV handle, AX
+[ 291]        :                                       ;lectura del archivo
+[ 292]        :                                       
+[ 293]    0AA0: B4 3F                                 MOV AH, 3FH;FUNCION PARA LEER EL CONTENIDO DEL ARCHIVO
+[ 294]    0AA2: 8B 1E B5 04                           MOV BX, handle
+[ 295]    0AA6: BA B9 04                              MOV DX, OFFSET vec
+[ 296]    0AA9: 8B 0E B7 04                           MOV CX, aux
+[ 297]    0AAD: CD 21                                 INT 21H
+[ 298]        :                                       
+[ 299]    0AAF: B4 02 B7 00 B6 06 B2 00 CD 10 BA 11   macroPosiciones 06D, 00D, contenidoArchi
+                05 B4 09 CD 21                      
+[ 300]        :                                       
+[ 301]    0AC0: B4 09                                 MOV AH, 09H
+[ 302]    0AC2: BA B9 04                              MOV DX, OFFSET vec
+[ 303]    0AC5: CD 21                                 INT 21H
+[ 304]        :                                       
+[ 305]        :                                       ;CIERRE DEL ARCHIVO
+[ 306]    0AC7: B4 3E CD 21                           macroCierreArchi
+[ 307]        :                                       
+[ 308]    0ACB: B4 02 B7 00 B6 08 B2 00 CD 10 BA 31   macroPosiciones 08D, 00D, cadeArchi6
+                03 B4 09 CD 21                      
+[ 309]    0ADC: B4 02 B7 00 B6 0E B2 02 CD 10 BA BA   macroSubArchi Read_file
+                03 B4 09 CD 21 B4 02 B7 00 B6 0F B2 
+                02 CD 10 BA DC 03 B4 09 CD 21 B4 02 
+                B7 00 B6 10 B2 02 CD 10 BA E5 03 B4 
+                09 CD 21 B4 02 B7 00 B6 11 B2 02 CD 
+                10 B4 09 BA F4 02 CD 21 B4 01 CD 21 
+                A2 1E 05 B4 02 B2 0A CD 21 80 3E 1E 
+                05 73 75 03 E9 22 FF 80 3E 1E 05 72 
+                75 03 E9 BB FD                      
+[ 310]        :                                       
+[ 311]        :                                       ;Etiqueta para la opcion de escribir un archivo
+[ 312]    0B41:                                       Update_file:
+[ 313]    0B41: B4 02 BA 00 00 CD 10                  macroClear
+[ 314]    0B48: B8 00 06 B7 6F B5 00 B1 00 B6 19 B2   macroColor 01101111B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 315]    0B57: B4 02 B7 00 B6 04 B2 02 CD 10 BA F4   macroPosiciones 04D,02D, cadeArchi14
+                03 B4 09 CD 21                      
+[ 316]    0B68: BE 00 00                              MOV SI,0;0 Movemos al puntero de pila en 0
+[ 317]        :                                       
+[ 318]    0B6B:                                       Pedir:
+[ 319]    0B6B: B4 01                                 MOV AH, 01H
+[ 320]    0B6D: CD 21                                 INT 21H
+[ 321]    0B6F: 88 84 B9 04                           MOV vec[SI],al
+[ 322]    0B73: 46                                    inc SI
+[ 323]    0B74: 3C 0D                                 CMP al,0dh
+[ 324]    0B76: 77 F3                                 JA Pedir
+[ 325]    0B78: 72 F1                                 Jb Pedir
+[ 326]        :                                       
+[ 327]    0B7A: B4 02 B7 00 B6 06 B2 02 CD 10 B4 09   macroPedirDatosA 06D, 02D, des1
+                BA EB 04 CD 21 B4 01 CD 21          
+[ 328]    0B8F: B4 01                                 MOV AH, 01H
+[ 329]    0B91: CD 21                                 INT 21H
+[ 330]    0B93: A2 1A 03                              MOV numArchi, AL
+[ 331]    0B96: B4 02                                 MOV AH, 02H
+[ 332]    0B98: B2 0A                                 MOV DL, 0AH
+[ 333]    0B9A: CD 21                                 INT 21H
+[ 334]    0B9C: 80 3E 1A 03 6E                        CMP numArchi, 110
+[ 335]    0BA1: 75 03 E9 6D 0A                        JE opcCancelada
+[ 336]        :                                       
+[ 337]    0BA6:                                       Editar:
+[ 338]    0BA6: 56                                    PUSH SI
+[ 339]    0BA7: BE 03 00                              MOV SI,3
+[ 340]    0BAA: B4 02 B7 00 B6 08 B2 02 CD 10 BA 5C   macroPosiciones 08D,02D, cadeArchi16
+                04 B4 09 CD 21                      
+[ 341]    0BBB: B4 02 B7 00 B6 0A B2 02 CD 10 BA 9A   macroPosiciones 10D,02D, cadeArchi10
+                03 B4 09 CD 21                      
+[ 342]    0BCC: E8 4F 0A                              CALL CICLOP
+[ 343]    0BCF: 5E                                    POP SI
+[ 344]    0BD0: B4 3D                                 MOV AH, 3DH
+[ 345]    0BD2: B0 01                                 MOV AL, 1H
+[ 346]    0BD4: BA 92 04                              MOV DX, OFFSET ruta
+[ 347]    0BD7: CD 21                                 INT 21H
+[ 348]    0BD9: 73 03 E9 3C 0A                        JC Salir ;si hubo error
+[ 349]        :                                       
+[ 350]        :                                       ;parte de la escritura
+[ 351]    0BDE: 8B D8                                 MOV BX, AX
+[ 352]    0BE0: 8B CE                                 MOV CX, si
+[ 353]    0BE2: BA B9 04                              MOV DX, OFFSET vec
+[ 354]    0BE5: B4 40                                 MOV AH, 40H
+[ 355]    0BE7: CD 21                                 INT 21H
+[ 356]    0BE9: 3B C8                                 CMP CX, AX
+[ 357]    0BEB: 74 03 E9 2A 0A                        JNE Salir
+[ 358]    0BF0: B4 3E CD 21                           macroCierreArchi
+[ 359]    0BF4: B4 02 B7 00 B6 0C B2 02 CD 10 BA 46   macroPosiciones 12D, 02D, cadeArchi7
+                03 B4 09 CD 21                      
+[ 360]    0C05: B4 02 B7 00 B6 0E B2 02 CD 10 BA BA   macroSubArchi Update_file
+                03 B4 09 CD 21 B4 02 B7 00 B6 0F B2 
+                02 CD 10 BA DC 03 B4 09 CD 21 B4 02 
+                B7 00 B6 10 B2 02 CD 10 BA E5 03 B4 
+                09 CD 21 B4 02 B7 00 B6 11 B2 02 CD 
+                10 B4 09 BA F4 02 CD 21 B4 01 CD 21 
+                A2 1E 05 B4 02 B2 0A CD 21 80 3E 1E 
+                05 73 75 03 E9 E1 FE 80 3E 1E 05 72 
+                75 03 E9 92 FC                      
+[ 361]        :                                       
+[ 362]        :                                       ;Etiqueta para la opcion de Eliminar un archivo
+[ 363]    0C6A:                                       Delete_file:
+[ 364]    0C6A: B4 02 BA 00 00 CD 10                  macroClear
+[ 365]    0C71: B8 00 06 B7 6F B5 00 B1 00 B6 19 B2   macroColor 01101111B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 366]    0C80: A2 1D 05                              mov opc, al
+[ 367]    0C83: B4 02                                 mov ah, 02h
+[ 368]    0C85: B2 0A                                 mov dl, 0ah
+[ 369]    0C87: CD 21                                 int 21h
+[ 370]    0C89: B4 02 B7 00 B6 02 B2 02 CD 10 BA 5C   macroPosiciones 02D,02D, cadeArchi16
+                04 B4 09 CD 21                      
+[ 371]        :                                       
+[ 372]    0C9A: 80 3E 1D 05 6E                        cmp opc, 110
+[ 373]    0C9F: 75 03 E9 6F 09                        je opcCancelada
+[ 374]        :                                       
+[ 375]    0CA4: B4 3E CD 21                           macroCierreArchi
+[ 376]    0CA8: B4 02 B7 00 B6 04 B2 02 CD 10 BA 9A   macroPosiciones 04D, 02D, cadeArchi10
+                03 B4 09 CD 21                      
+[ 377]        :                                       
+[ 378]    0CB9: E8 62 09                              CALL CICLOP
+[ 379]        :                                       
+[ 380]    0CBC: B4 41                                 mov ah, 41h;eliminar
+[ 381]    0CBE: B9 00 00                              mov cx, 0
+[ 382]    0CC1: BA 92 04                              mov dx, offset ruta
+[ 383]    0CC4: CD 21                                 int 21h
+[ 384]    0CC6: A3 B5 04                              mov handle, ax
+[ 385]    0CC9: B4 02 B7 00 B6 06 B2 02 CD 10 BA 5D   macroPosiciones 06D, 02D, cadeArchi8
+                03 B4 09 CD 21                      
+[ 386]        :                                       
+[ 387]        :                                       
+[ 388]        :                                       
+[ 389]    0CDA: B4 02 B7 00 B6 0E B2 02 CD 10 BA BA   macroSubArchi Delete_file
+                03 B4 09 CD 21 B4 02 B7 00 B6 0F B2 
+                02 CD 10 BA DC 03 B4 09 CD 21 B4 02 
+                B7 00 B6 10 B2 02 CD 10 BA E5 03 B4 
+                09 CD 21 B4 02 B7 00 B6 11 B2 02 CD 
+                10 B4 09 BA F4 02 CD 21 B4 01 CD 21 
+                A2 1E 05 B4 02 B2 0A CD 21 80 3E 1E 
+                05 73 75 03 E9 35 FF 80 3E 1E 05 72 
+                75 03 E9 BD FB                      
+[ 390]        :                                       
+[ 391]        :                                       ;Etiqueta de submenu de archivos
+[ 392]        :                                       
+[ 393]        :                                       
+[ 394]        :                                       ;Etiqueta para el ciclo utilizado en los archivos
+[ 395]    0D3F:                                       Ciclo_ar:
+[ 396]    0D3F: B4 01                                 MOV AH,01H
+[ 397]    0D41: CD 21                                 INT 21H
+[ 398]    0D43: 3C 0D                                 CMP AL,0dh   ;enter
+[ 399]    0D45: 74 0C                                 JE FinCiclo
+[ 400]    0D47: 83 FE 21                              CMP SI,33
+[ 401]    0D4A: 74 07                                 JE FinCiclo
+[ 402]        :                                       
+[ 403]    0D4C: 88 84 92 04                           MOV ruta [si],al
+[ 404]    0D50: 46                                    INC si
+[ 405]    0D51: 72 EC                                 JB Ciclo_ar
+[ 406]        :                                       
+[ 407]        :                                       
+[ 408]    0D53:                                       FinCiclo:
+[ 409]    0D53: C6 84 92 04 00                        MOV ruta[si],0d
+[ 410]    0D58: C3                                    ret ; nos mueve a donde quedamos anteriormente
+[ 411]        :                                       
+[ 412]        :                                       
+[ 413]        :                                       ;Etiqueta para la seccion de la bota navidenia
+[ 414]    0D59:                                       Bota_navidenia:
+[ 415]    0D59: B4 02 BA 00 00 CD 10                  macroClear
+[ 416]    0D60: B8 00 06 B7 6F B5 00 B1 00 B6 19 B2   macroColor 01101111B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 417]        :                                       
+[ 418]        :                                       
+[ 419]        :                                       ;nieve callendo
+[ 420]    0D6F: B4 02 B7 00 B6 01 B2 01 CD 10 BA 5C   macroPosiciones 01D, 01D, mensaje8
+                05 B4 09 CD 21                      
+[ 421]    0D80: B4 02 B7 00 B6 03 B2 01 CD 10 BA 5C   macroPosiciones 03D, 01D, mensaje8
+                05 B4 09 CD 21                      
+[ 422]    0D91: B4 02 B7 00 B6 05 B2 01 CD 10 BA 5C   macroPosiciones 05D, 01D, mensaje8
+                05 B4 09 CD 21                      
+[ 423]    0DA2: B4 02 B7 00 B6 07 B2 01 CD 10 BA 5C   macroPosiciones 07D, 01D, mensaje8
+                05 B4 09 CD 21                      
+[ 424]    0DB3: B4 02 B7 00 B6 09 B2 01 CD 10 BA 5C   macroPosiciones 09D, 01D, mensaje8
+                05 B4 09 CD 21                      
+[ 425]    0DC4: B4 02 B7 00 B6 0B B2 01 CD 10 BA 5C   macroPosiciones 11D, 01D, mensaje8
+                05 B4 09 CD 21                      
+[ 426]    0DD5: B4 02 B7 00 B6 0D B2 01 CD 10 BA 5C   macroPosiciones 13D, 01D, mensaje8
+                05 B4 09 CD 21                      
+[ 427]        :                                       
+[ 428]        :                                       
+[ 429]        :                                       ;PARA EL COLOR ROJO
+[ 430]        :                                       ;se define el color, el incio de columnaI, la filaI, columnaF y la filaF
+[ 431]    0DE6: B8 00 06 B7 44 B5 01 B1 14 B6 02 B2   macroColor 01000100B, 0001D, 0020D, 2D, 20D
+                14 CD 10                            
+[ 432]    0DF5: B8 00 06 B7 44 B5 02 B1 13 B6 02 B2   macroColor 01000100B, 0002D, 0019D, 2D, 19D
+                13 CD 10                            
+[ 433]    0E04: B8 00 06 B7 44 B5 03 B1 15 B6 03 B2   macroColor 01000100B, 0003D, 0021D, 3D, 21D
+                15 CD 10                            
+[ 434]        :                                       
+[ 435]        :                                       
+[ 436]        :                                       ;PARA EL COLOR ROSA
+[ 437]        :                                       ;se define el color, el incio de columnaI, la filaI, columnaF y la filaF
+[ 438]    0E13: B8 00 06 B7 DD B5 01 B1 16 B6 01 B2   macroColor 11011101B, 0001D, 0022D, 1D, 22D
+                16 CD 10                            
+[ 439]    0E22: B8 00 06 B7 DD B5 02 B1 15 B6 02 B2   macroColor 11011101B, 0002D, 0021D, 2D, 23D
+                17 CD 10                            
+[ 440]    0E31: B8 00 06 B7 DD B5 03 B1 14 B6 03 B2   macroColor 11011101B, 0003D, 0020D, 3D, 20D
+                14 CD 10                            
+[ 441]    0E40: B8 00 06 B7 DD B5 03 B1 16 B6 03 B2   macroColor 11011101B, 0003D, 0022D, 3D, 24D
+                18 CD 10                            
+[ 442]    0E4F: B8 00 06 B7 DD B5 04 B1 13 B6 04 B2   macroColor 11011101B, 0004D, 0019D, 4D, 24D
+                18 CD 10                            
+[ 443]    0E5E: B8 00 06 B7 44 B5 04 B1 16 B6 04 B2   macroColor 01000100B, 0004D, 0022D, 4D, 22D
+                16 CD 10                            
+[ 444]        :                                       
+[ 445]        :                                       
+[ 446]        :                                       ;PARA EL COLOR CELESTE
+[ 447]        :                                       ;se define el color, el incio de columnaI, la filaI, columnaF y la filaF
+[ 448]    0E6D: B8 00 06 B7 BB B5 01 B1 1A B6 01 B2   macroColor 10111011B, 0001D, 0026D, 1D, 27D
+                1B CD 10                            
+[ 449]    0E7C: B8 00 06 B7 BB B5 01 B1 1D B6 01 B2   macroColor 10111011B, 0001D, 0029D, 1D, 30D
+                1E CD 10                            
+[ 450]    0E8B: B8 00 06 B7 BB B5 02 B1 1A B6 02 B2   macroColor 10111011B, 0002D, 0026D, 2D, 30D
+                1E CD 10                            
+[ 451]    0E9A: B8 00 06 B7 BB B5 03 B1 1C B6 04 B2   macroColor 10111011B, 0003D, 0028D, 4D, 28D
+                1C CD 10                            
+[ 452]        :                                       
+[ 453]        :                                       ;PARA EL COLOR AZUL
+[ 454]        :                                       ;se define el color, el incio de columnaI, la filaI, columnaF y la filaF
+[ 455]    0EA9: B8 00 06 B7 11 B5 03 B1 19 B6 04 B2   macroColor 00010001B, 0003D, 0025D, 4D, 27D
+                1B CD 10                            
+[ 456]    0EB8: B8 00 06 B7 11 B5 03 B1 1D B6 04 B2   macroColor 00010001B, 0003D, 0029D, 4D, 31D
+                1F CD 10                            
+[ 457]        :                                       
+[ 458]        :                                       ;PARA EL COLOR BLANCO
+[ 459]        :                                       ;se define el color, el incio de columnaI, la filaI, columnaF y la filaF
+[ 460]    0EC7: B8 00 06 B7 F0 B5 05 B1 13 B6 0A B2   macroColor 11110000B, 05D, 19D,  10D, 31D
+                1F CD 10                            
+[ 461]    0ED6: B8 00 06 B7 F0 B5 0F B1 00 B6 1A B2   macroColor 11110000B, 15D, 00D,  26D, 61D
+                3D CD 10                            
+[ 462]        :                                       
+[ 463]        :                                       
+[ 464]        :                                       ;PARA EL COLOR ROJO
+[ 465]        :                                       ;se define el color, el incio de columnaI, la filaI, columnaF y la filaF
+[ 466]    0EE5: B8 00 06 B7 CC B5 0B B1 14 B6 13 B2   macroColor 11001100B, 0011D, 0020D, 19D, 30D
+                1E CD 10                            
+[ 467]    0EF4: B8 00 06 B7 CC B5 0F B1 13 B6 17 B2   macroColor 11001100B, 0015D, 0019D, 23D, 19D
+                13 CD 10                            
+[ 468]    0F03: B8 00 06 B7 CC B5 10 B1 12 B6 17 B2   macroColor 11001100B, 0016D, 0018D, 23D, 18D
+                12 CD 10                            
+[ 469]    0F12: B8 00 06 B7 CC B5 10 B1 11 B6 17 B2   macroColor 11001100B, 0016D, 0017D, 23D, 17D
+                11 CD 10                            
+[ 470]    0F21: B8 00 06 B7 CC B5 10 B1 10 B6 17 B2   macroColor 11001100B, 0016D, 0016D, 23D, 16D
+                10 CD 10                            
+[ 471]    0F30: B8 00 06 B7 CC B5 11 B1 0F B6 16 B2   macroColor 11001100B, 0017D, 0015D, 22D, 15D
+                0F CD 10                            
+[ 472]    0F3F: B8 00 06 B7 CC B5 12 B1 0E B6 15 B2   macroColor 11001100B, 0018D, 0014D, 21D, 14D
+                0E CD 10                            
+[ 473]    0F4E: B8 00 06 B7 CC B5 14 B1 14 B6 14 B2   macroColor 11001100B, 0020D, 0020D, 20D, 29D
+                1D CD 10                            
+[ 474]    0F5D: B8 00 06 B7 CC B5 15 B1 14 B6 15 B2   macroColor 11001100B, 0021D, 0020D, 21D, 28D
+                1C CD 10                            
+[ 475]    0F6C: B8 00 06 B7 CC B5 16 B1 14 B6 16 B2   macroColor 11001100B, 0022D, 0020D, 22D, 27D
+                1B CD 10                            
+[ 476]    0F7B: B8 00 06 B7 CC B5 17 B1 14 B6 17 B2   macroColor 11001100B, 0023D, 0020D, 23D, 26D
+                1A CD 10                            
+[ 477]        :                                       
+[ 478]        :                                       ;PARA EL COLOR VERDE
+[ 479]        :                                       ;se define el color, el incio de columnaI, la filaI, columnaF y la filaF
+[ 480]    0F8A: B8 00 06 B7 AA B5 0A B1 1D B6 0A B2   macroColor 10101010B, 0010D, 0029D, 10D, 31D
+                1F CD 10                            
+[ 481]    0F99: B8 00 06 B7 AA B5 09 B1 1C B6 09 B2   macroColor 10101010B, 0009D, 0028D, 09D, 32D
+                20 CD 10                            
+[ 482]    0FA8: B8 00 06 B7 AA B5 08 B1 1B B6 08 B2   macroColor 10101010B, 0008D, 0027D, 08D, 29D
+                1D CD 10                            
+[ 483]    0FB7: B8 00 06 B7 AA B5 08 B1 1F B6 08 B2   macroColor 10101010B, 0008D, 0031D, 08D, 33D
+                21 CD 10                            
+[ 484]    0FC6: B8 00 06 B7 AA B5 07 B1 1B B6 07 B2   macroColor 10101010B, 0007D, 0027D, 07D, 28D
+                1C CD 10                            
+[ 485]    0FD5: B8 00 06 B7 AA B5 07 B1 20 B6 07 B2   macroColor 10101010B, 0007D, 0032D, 07D, 33D
+                21 CD 10                            
+[ 486]        :                                       
+[ 487]        :                                       ;Unico color amarillo
+[ 488]        :                                       ;se define el color, el incio de columnaI, la filaI, columnaF y la filaF
+[ 489]    0FE4: B8 00 06 B7 EE B5 0A B1 1E B6 0A B2   macroColor 11101110B, 0010D, 0030D, 10D, 30D
+                1E CD 10                            
+[ 490]        :                                       
+[ 491]        :                                       ;Se imprime un mensaje con posicion f, c
+[ 492]        :                                       ; macroPosiciones 18D, 38D, mensaje4
+[ 493]    0FF3: B4 02 B7 00 B6 13 B2 25 CD 10 BA 30   macroPosiciones 19D, 37D, mensaje5
+                05 B4 09 CD 21                      
+[ 494]    1004: B4 02 B7 00 B6 14 B2 24 CD 10 BA 41   macroPosiciones 20D, 36D, mensaje6
+                05 B4 09 CD 21                      
+[ 495]    1015: B4 02 B7 00 B6 15 B2 2B CD 10 BA 56   macroPosiciones 21D, 43D, mensaje7
+                05 B4 09 CD 21                      
+[ 496]        :                                       
+[ 497]        :                                       ;pino 1
+[ 498]    1026: B8 00 06 B7 AA B5 06 B1 08 B6 06 B2   macroColor 10101010B, 06D, 08D, 06D, 08D
+                08 CD 10                            
+[ 499]    1035: B8 00 06 B7 AA B5 07 B1 07 B6 07 B2   macroColor 10101010B, 07D, 07D, 07D, 09D
+                09 CD 10                            
+[ 500]    1044: B8 00 06 B7 AA B5 08 B1 06 B6 08 B2   macroColor 10101010B, 08D, 06D, 08D, 10D
+                0A CD 10                            
+[ 501]    1053: B8 00 06 B7 AA B5 09 B1 05 B6 09 B2   macroColor 10101010B, 09D, 05D, 09D, 11D
+                0B CD 10                            
+[ 502]    1062: B8 00 06 B7 AA B5 0A B1 04 B6 0A B2   macroColor 10101010B, 10D, 04D, 10D, 12D
+                0C CD 10                            
+[ 503]    1071: B8 00 06 B7 AA B5 0B B1 03 B6 0B B2   macroColor 10101010B, 11D, 03D, 11D, 13D
+                0D CD 10                            
+[ 504]        :                                       
+[ 505]    1080: B8 00 06 B7 44 B5 0C B1 06 B6 0E B2   macroColor 01000100B, 12D, 06D, 14D, 10D
+                0A CD 10                            
+[ 506]        :                                       
+[ 507]        :                                       ;pino 2
+[ 508]    108F: B8 00 06 B7 AA B5 06 B1 2E B6 06 B2   macroColor 10101010B, 06D, 46D, 06D, 46D
+                2E CD 10                            
+[ 509]    109E: B8 00 06 B7 AA B5 07 B1 2D B6 07 B2   macroColor 10101010B, 07D, 45D, 07D, 47D
+                2F CD 10                            
+[ 510]    10AD: B8 00 06 B7 AA B5 08 B1 2C B6 08 B2   macroColor 10101010B, 08D, 44D, 08D, 48D
+                30 CD 10                            
+[ 511]    10BC: B8 00 06 B7 AA B5 09 B1 2B B6 09 B2   macroColor 10101010B, 09D, 43D, 09D, 49D
+                31 CD 10                            
+[ 512]    10CB: B8 00 06 B7 AA B5 0A B1 2A B6 0A B2   macroColor 10101010B, 10D, 42D, 10D, 50D
+                32 CD 10                            
+[ 513]    10DA: B8 00 06 B7 AA B5 0B B1 29 B6 0B B2   macroColor 10101010B, 11D, 41D, 11D, 51D
+                33 CD 10                            
+[ 514]        :                                       
+[ 515]    10E9: B8 00 06 B7 44 B5 0C B1 2C B6 0E B2   macroColor 01000100B, 12D, 44D, 14D, 48D
+                30 CD 10                            
+[ 516]        :                                       
+[ 517]    10F8: E8 2A 05                              CALL procSubmenu0
+[ 518]        :                                       
+[ 519]    10FB:                                       Hoja_Presentacion:
+[ 520]        :                                       
+[ 521]    10FB: B8 00 06 B7 B0 B5 00 B1 00 B6 19 B2   macroColor 10110000B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 522]        :                                       
+[ 523]    110A: B4 02 B7 00 B6 02 B2 07 CD 10 BA 98   macroPosiciones 02D, 07D, CadeP1
+                05 B4 09 CD 21                      
+[ 524]    111B: B4 02 B7 00 B6 03 B2 07 CD 10 BA B9   macroPosiciones 03D, 07D, CadeP2
+                05 B4 09 CD 21                      
+[ 525]    112C: B4 02 B7 00 B6 04 B2 07 CD 10 BA C3   macroPosiciones 04D, 07D, CadeP3
+                05 B4 09 CD 21                      
+[ 526]    113D: B4 02 B7 00 B6 05 B2 07 CD 10 BA DD   macroPosiciones 05D, 07D, CadeP4
+                05 B4 09 CD 21                      
+[ 527]    114E: B4 02 B7 00 B6 06 B2 07 CD 10 BA EC   macroPosiciones 06D, 07D, CadeP5
+                05 B4 09 CD 21                      
+[ 528]    115F: B4 02 B7 00 B6 07 B2 07 CD 10 BA F0   macroPosiciones 07D, 07D, CadeP6
+                05 B4 09 CD 21                      
+[ 529]    1170: B4 02 B7 00 B6 09 B2 07 CD 10 BA FD   macroPosiciones 09D, 07D, CadeP7
+                05 B4 09 CD 21                      
+[ 530]    1181: B4 02 B7 00 B6 0A B2 07 CD 10 BA 1A   macroPosiciones 10D, 07D, CadeP8
+                06 B4 09 CD 21                      
+[ 531]    1192: B4 02 B7 00 B6 0B B2 07 CD 10 BA 33   macroPosiciones 11D, 07D, CadeP9
+                06 B4 09 CD 21                      
+[ 532]    11A3: B4 02 B7 00 B6 0C B2 07 CD 10 BA 47   macroPosiciones 12D, 07D, CadeP10
+                06 B4 09 CD 21                      
+[ 533]    11B4: B4 02 B7 00 B6 0D B2 07 CD 10 BA 5D   macroPosiciones 13D, 07D, CadeP11
+                06 B4 09 CD 21                      
+[ 534]        :                                       
+[ 535]        :                                       ; macroColor 10111011B, 14D, 45D, 24D, 79D
+[ 536]        :                                       
+[ 537]        :                                       ;color rosa centro
+[ 538]    11C5: B8 00 06 B7 DD B5 13 B1 38 B6 18 B2   macroColor 11011101B, 19D, 56D, 24D, 68D         ;fila, columna, fila, columna
+                44 CD 10                            
+[ 539]    11D4: B8 00 06 B7 DD B5 14 B1 37 B6 18 B2   macroColor 11011101B, 20D, 55D, 24D, 55D
+                37 CD 10                            
+[ 540]    11E3: B8 00 06 B7 DD B5 15 B1 36 B6 18 B2   macroColor 11011101B, 21D, 54D, 24D, 54D
+                36 CD 10                            
+[ 541]    11F2: B8 00 06 B7 DD B5 14 B1 45 B6 18 B2   macroColor 11011101B, 20D, 69D, 24D, 69D
+                45 CD 10                            
+[ 542]    1201: B8 00 06 B7 DD B5 15 B1 46 B6 18 B2   macroColor 11011101B, 21D, 70D, 24D, 70D
+                46 CD 10                            
+[ 543]    1210: B8 00 06 B7 DD B5 12 B1 3B B6 12 B2   macroColor 11011101B, 18D, 59D, 18D, 65D
+                41 CD 10                            
+[ 544]        :                                       
+[ 545]        :                                       ;color rojo lado derecho
+[ 546]    121F: B8 00 06 B7 44 B5 18 B1 35 B6 18 B2   macroColor 01000100B, 24D, 53D, 24D, 53D
+                35 CD 10                            
+[ 547]    122E: B8 00 06 B7 44 B5 17 B1 2F B6 17 B2   macroColor 01000100B, 23D, 47D, 23D, 53D
+                35 CD 10                            
+[ 548]    123D: B8 00 06 B7 44 B5 16 B1 2E B6 16 B2   macroColor 01000100B, 22D, 46D, 22D, 53D
+                35 CD 10                            
+[ 549]    124C: B8 00 06 B7 44 B5 15 B1 2D B6 15 B2   macroColor 01000100B, 21D, 45D, 21D, 53D
+                35 CD 10                            
+[ 550]    125B: B8 00 06 B7 44 B5 14 B1 2D B6 14 B2   macroColor 01000100B, 20D, 45D, 20D, 54D
+                36 CD 10                            
+[ 551]    126A: B8 00 06 B7 44 B5 13 B1 31 B6 13 B2   macroColor 01000100B, 19D, 49D, 19D, 55D
+                37 CD 10                            
+[ 552]    1279: B8 00 06 B7 44 B5 13 B1 2E B6 13 B2   macroColor 01000100B, 19D, 46D, 19D, 46D
+                2E CD 10                            
+[ 553]    1288: B8 00 06 B7 44 B5 12 B1 30 B6 12 B2   macroColor 01000100B, 18D, 48D, 18D, 58D
+                3A CD 10                            
+[ 554]    1297: B8 00 06 B7 44 B5 11 B1 30 B6 11 B2   macroColor 01000100B, 17D, 48D, 17D, 50D
+                32 CD 10                            
+[ 555]    12A6: B8 00 06 B7 44 B5 11 B1 34 B6 11 B2   macroColor 01000100B, 17D, 52D, 17D, 55D
+                37 CD 10                            
+[ 556]        :                                       ;macroColor 01000100B, 17D, 74D, 17D, 76D
+[ 557]    12B5: B8 00 06 B7 44 B5 10 B1 30 B6 10 B2   macroColor 01000100B, 16D, 48D, 16D, 50D
+                32 CD 10                            
+[ 558]    12C4: B8 00 06 B7 44 B5 10 B1 34 B6 10 B2   macroColor 01000100B, 16D, 52D, 16D, 54D
+                36 CD 10                            
+[ 559]    12D3: B8 00 06 B7 44 B5 0F B1 34 B6 0F B2   macroColor 01000100B, 15D, 52D, 15D, 54D
+                36 CD 10                            
+[ 560]    12E2: B8 00 06 B7 44 B5 0F B1 31 B6 0F B2   macroColor 01000100B, 15D, 49D, 15D, 49D
+                31 CD 10                            
+[ 561]    12F1: B8 00 06 B7 44 B5 0E B1 35 B6 0E B2   macroColor 01000100B, 14D, 53D, 14D, 53D
+                35 CD 10                            
+[ 562]        :                                       
+[ 563]        :                                       ;color rojo lado izquierdo
+[ 564]    1300: B8 00 06 B7 44 B5 18 B1 47 B6 18 B2   macroColor 01000100B, 24D, 71D, 24D, 71D
+                47 CD 10                            
+[ 565]    130F: B8 00 06 B7 44 B5 17 B1 47 B6 17 B2   macroColor 01000100B, 23D, 71D, 23D, 77D
+                4D CD 10                            
+[ 566]    131E: B8 00 06 B7 44 B5 16 B1 47 B6 16 B2   macroColor 01000100B, 22D, 71D, 22D, 78D
+                4E CD 10                            
+[ 567]    132D: B8 00 06 B7 44 B5 15 B1 47 B6 15 B2   macroColor 01000100B, 21D, 71D, 21D, 79D
+                4F CD 10                            
+[ 568]    133C: B8 00 06 B7 44 B5 14 B1 46 B6 14 B2   macroColor 01000100B, 20D, 70D, 20D, 79D
+                4F CD 10                            
+[ 569]    134B: B8 00 06 B7 44 B5 13 B1 45 B6 13 B2   macroColor 01000100B, 19D, 69D, 19D, 75D
+                4B CD 10                            
+[ 570]    135A: B8 00 06 B7 44 B5 13 B1 4E B6 13 B2   macroColor 01000100B, 19D, 78D, 19D, 78D
+                4E CD 10                            
+[ 571]    1369: B8 00 06 B7 44 B5 12 B1 42 B6 12 B2   macroColor 01000100B, 18D, 66D, 18D, 76D
+                4C CD 10                            
+[ 572]    1378: B8 00 06 B7 44 B5 11 B1 3B B6 11 B2   macroColor 01000100B, 17D, 59D, 17D, 65D
+                41 CD 10                            
+[ 573]    1387: B8 00 06 B7 44 B5 11 B1 45 B6 11 B2   macroColor 01000100B, 17D, 69D, 17D, 72D
+                48 CD 10                            
+[ 574]    1396: B8 00 06 B7 44 B5 11 B1 4A B6 11 B2   macroColor 01000100B, 17D, 74D, 17D, 76D
+                4C CD 10                            
+[ 575]    13A5: B8 00 06 B7 44 B5 10 B1 46 B6 10 B2   macroColor 01000100B, 16D, 70D, 16D, 72D
+                48 CD 10                            
+[ 576]    13B4: B8 00 06 B7 44 B5 0F B1 46 B6 0F B2   macroColor 01000100B, 15D, 70D, 15D, 72D
+                48 CD 10                            
+[ 577]    13C3: B8 00 06 B7 44 B5 10 B1 4A B6 10 B2   macroColor 01000100B, 16D, 74D, 16D, 76D
+                4C CD 10                            
+[ 578]    13D2: B8 00 06 B7 44 B5 0F B1 4B B6 0F B2   macroColor 01000100B, 15D, 75D, 15D, 75D
+                4B CD 10                            
+[ 579]    13E1: B8 00 06 B7 44 B5 0E B1 47 B6 0E B2   macroColor 01000100B, 14D, 71D, 14D, 71D
+                47 CD 10                            
+[ 580]        :                                       
+[ 581]        :                                       
+[ 582]        :                                       ;color rosa lado derecho
+[ 583]    13F0: B8 00 06 B7 DD B5 16 B1 2F B6 16 B2   macroColor 11011101B, 22D, 47D, 22D, 52D
+                34 CD 10                            
+[ 584]    13FF: B8 00 06 B7 DD B5 15 B1 2E B6 15 B2   macroColor 11011101B, 21D, 46D, 21D, 50D
+                32 CD 10                            
+[ 585]    140E: B8 00 06 B7 DD B5 14 B1 2E B6 14 B2   macroColor 11011101B, 20D, 46D, 20D, 46D
+                2E CD 10                            
+[ 586]    141D: B8 00 06 B7 DD B5 14 B1 33 B6 14 B2   macroColor 11011101B, 20D, 51D, 20D, 53D
+                35 CD 10                            
+[ 587]    142C: B8 00 06 B7 DD B5 13 B1 32 B6 13 B2   macroColor 11011101B, 19D, 50D, 19D, 52D
+                34 CD 10                            
+[ 588]    143B: B8 00 06 B7 DD B5 12 B1 31 B6 12 B2   macroColor 11011101B, 18D, 49D, 18D, 50D
+                32 CD 10                            
+[ 589]    144A: B8 00 06 B7 DD B5 12 B1 36 B6 12 B2   macroColor 11011101B, 18D, 54D, 18D, 55D
+                37 CD 10                            
+[ 590]    1459: B8 00 06 B7 DD B5 11 B1 31 B6 11 B2   macroColor 11011101B, 17D, 49D, 17D, 49D
+                31 CD 10                            
+[ 591]    1468: B8 00 06 B7 DD B5 11 B1 35 B6 11 B2   macroColor 11011101B, 17D, 53D, 17D, 54D
+                36 CD 10                            
+[ 592]    1477: B8 00 06 B7 DD B5 10 B1 31 B6 10 B2   macroColor 11011101B, 16D, 49D, 16D, 49D
+                31 CD 10                            
+[ 593]    1486: B8 00 06 B7 DD B5 0F B1 35 B6 10 B2   macroColor 11011101B, 15D, 53D, 16D, 53D
+                35 CD 10                            
+[ 594]        :                                       
+[ 595]        :                                       ;color roja lado izquierdo
+[ 596]    1495: B8 00 06 B7 DD B5 16 B1 48 B6 16 B2   macroColor 11011101B, 22D, 72D, 22D, 77D
+                4D CD 10                            
+[ 597]    14A4: B8 00 06 B7 DD B5 15 B1 4A B6 15 B2   macroColor 11011101B, 21D, 74D, 21D, 78D
+                4E CD 10                            
+[ 598]    14B3: B8 00 06 B7 DD B5 14 B1 4E B6 14 B2   macroColor 11011101B, 20D, 78D, 20D, 78D
+                4E CD 10                            
+[ 599]    14C2: B8 00 06 B7 DD B5 14 B1 47 B6 14 B2   macroColor 11011101B, 20D, 71D, 20D, 73D
+                49 CD 10                            
+[ 600]    14D1: B8 00 06 B7 DD B5 13 B1 47 B6 13 B2   macroColor 11011101B, 19D, 71D, 19D, 74D
+                4A CD 10                            
+[ 601]    14E0: B8 00 06 B7 DD B5 12 B1 45 B6 12 B2   macroColor 11011101B, 18D, 69D, 18D, 70D
+                46 CD 10                            
+[ 602]    14EF: B8 00 06 B7 DD B5 12 B1 4A B6 12 B2   macroColor 11011101B, 18D, 74D, 18D, 75D
+                4B CD 10                            
+[ 603]    14FE: B8 00 06 B7 DD B5 10 B1 4B B6 11 B2   macroColor 11011101B, 16D, 75D, 17D, 75D
+                4B CD 10                            
+[ 604]    150D: B8 00 06 B7 DD B5 11 B1 46 B6 11 B2   macroColor 11011101B, 17D, 70D, 17D, 71D
+                47 CD 10                            
+[ 605]        :                                       ;macroColor 11011101B, 16D, 49D, 16D, 49D
+[ 606]    151C: B8 00 06 B7 DD B5 0F B1 47 B6 10 B2   macroColor 11011101B, 15D, 71D, 16D, 71D
+                47 CD 10                            
+[ 607]        :                                       
+[ 608]        :                                       ;color para la boca
+[ 609]    152B: B8 00 06 B7 44 B5 18 B1 3D B6 18 B2   macroColor 01000100B, 24D, 61D, 24D, 63D
+                3F CD 10                            
+[ 610]    153A: B8 00 06 B7 44 B5 17 B1 3C B6 17 B2   macroColor 01000100B, 23D, 60D, 23D, 60D
+                3C CD 10                            
+[ 611]    1549: B8 00 06 B7 44 B5 17 B1 40 B6 17 B2   macroColor 01000100B, 23D, 64D, 23D, 64D
+                40 CD 10                            
+[ 612]        :                                       
+[ 613]        :                                       ;color para los ojos
+[ 614]    1558: B8 00 06 B7 00 B5 15 B1 39 B6 16 B2   macroColor 00000000B, 21D, 57D, 22D, 58D
+                3A CD 10                            
+[ 615]    1567: B8 00 06 B7 00 B5 15 B1 42 B6 16 B2   macroColor 00000000B, 21D, 66D, 22D, 67D
+                43 CD 10                            
+[ 616]        :                                       
+[ 617]        :                                       
+[ 618]    1576: E8 12 01                              CALL procSubmenu1;llamada al proceso del submenu
+[ 619]        :                                       
+[ 620]        :                                       
+[ 621]        :                                       ;Etiqueta para la seccion del Submenu
+[ 622]    1579:                                       Submenu:
+[ 623]    1579: B4 02 BA 00 00 CD 10                  macroClear
+[ 624]    1580: B8 00 06 B7 F0 B5 00 B1 3E B6 0A B2   macroColor 11110000B, 00D, 62D, 10D, 79D
+                4F CD 10                            
+[ 625]    158F: B4 02 B7 00 B6 01 B2 3F CD 10 BA C7   macroPosiciones 01D, 63D, cadeSub0
+                00 B4 09 CD 21                      
+[ 626]    15A0: B4 02 B7 00 B6 02 B2 3F CD 10 BA D9   macroPosiciones 02D, 63D, cadeSub1
+                00 B4 09 CD 21                      
+[ 627]    15B1: B4 02 B7 00 B6 03 B2 3F CD 10 BA E9   macroPosiciones 03D, 63D, cadeSub2
+                00 B4 09 CD 21                      
+[ 628]    15C2: B4 02 B7 00 B6 04 B2 3F CD 10 B4 09   macroPedirDatos 04D, 63D, cadePedSub, cadeNumSub
+                BA F4 00 CD 21 B4 01 CD 21 2C 30 A2 
+                F8 00                               
+[ 629]    15DC: E9 57 F1                              JMP Comparaciones_secundarias
+[ 630]        :                                       
+[ 631]        :                                       ;Etiqueta que imprime un mensaje cuando se ingresa una opcion incorrecta en el menu y luego limpia la pantalla
+[ 632]    15DF:                                       Opcion_incorrecta:
+[ 633]    15DF: B8 00 06 B7 0F B5 00 B1 00 B6 19 B2   macroColor 00001111B, 00D, 00D, 25D, 79D
+                4F CD 10                            
+[ 634]    15EE: B4 02 B7 00 B6 09 B2 0F CD 10 BA F9   macroPosiciones 09D, 15D, cadeError
+                00 B4 09 CD 21                      
+[ 635]    15FF: B4 02 B7 00 B6 0A B2 0F CD 10 BA 16   macroPosiciones 10D, 15D, cadeError2
+                01 B4 09 CD 21                      
+[ 636]    1610: E9 66 FF                              JMP Submenu
+[ 637]        :                                       
+[ 638]    1613:                                       opcCancelada:
+[ 639]    1613: B4 09                                 MOV AH, 09H
+[ 640]    1615: BA 16 04                              LEA DX, cadeCancelada
+[ 641]    1618: CD 21                                 INT 21H
+[ 642]        :                                       
+[ 643]        :                                       ;Etiqueta para la seccion que finalia el programa
+[ 644]    161A:                                       Salir:
+[ 645]    161A: B4 4C                                 MOV AH, 4CH
+[ 646]    161C: CD 21                                 INT 21H
+[ 647]        :                                       ;------------------------------------------------------------------
+[ 648]        :                                       ; PROCESOS CERCANOS
+[ 649]        :                                       
+[ 650]        :                                       ;proceso que realiza la llamada al ciclo que guarda el nombre del archivo
+[ 651]    161E:                                       CICLOP PROC NEAR
+[ 652]    161E: BE 03 00                              MOV SI,3;mueve el puntero a la pocision 3
+[ 653]    1621: E8 1B F7                              CALL Ciclo_ar ;llamamos a la etiqueta Ciclo_Ar
+[ 654]    1624: C3                                    RET
+[ 655]        :                                       CICLOP ENDP
+[ 656]        :                                       
+[ 657]    1625:                                       procSubmenu0 PROC NEAR
+[ 658]    1625: B4 02 BA 00 00 CD 10                  macroClear
+[ 659]    162C: B8 00 06 B7 0F B5 00 B1 3E B6 19 B2   macroColor 00001111B, 00D, 62D, 25D, 79D
+                4F CD 10                            
+[ 660]    163B: B4 02 B7 00 B6 01 B2 3F CD 10 BA C7   macroPosiciones 01D, 63D, cadeSub0
+                00 B4 09 CD 21                      
+[ 661]    164C: B4 02 B7 00 B6 02 B2 3F CD 10 BA D9   macroPosiciones 02D, 63D, cadeSub1
+                00 B4 09 CD 21                      
+[ 662]    165D: B4 02 B7 00 B6 03 B2 3F CD 10 BA E9   macroPosiciones 03D, 63D, cadeSub2
+                00 B4 09 CD 21                      
+[ 663]    166E: B4 02 B7 00 B6 04 B2 3F CD 10 B4 09   macroPedirDatos 04D, 63D, cadePedSub, cadeNumSub
+                BA F4 00 CD 21 B4 01 CD 21 2C 30 A2 
+                F8 00                               
+[ 664]    1688: E9 AB F0                              JMP Comparaciones_secundarias
+[ 665]        :                                       procSubmenu0 ENDP
+[ 666]        :                                       
+[ 667]    168B:                                       procSubmenu1 PROC NEAR
+[ 668]    168B: B4 02 BA 00 00 CD 10                  macroClear
+[ 669]    1692: B8 00 06 B7 F0 B5 00 B1 3E B6 0A B2   macroColor 11110000B, 00D, 62D, 10D,79D
+                4F CD 10                            
+[ 670]    16A1: B4 02 B7 00 B6 01 B2 3F CD 10 BA C7   macroPosiciones 01D, 63D, cadeSub0
+                00 B4 09 CD 21                      
+[ 671]    16B2: B4 02 B7 00 B6 02 B2 3F CD 10 BA D9   macroPosiciones 02D, 63D, cadeSub1
+                00 B4 09 CD 21                      
+[ 672]    16C3: B4 02 B7 00 B6 03 B2 3F CD 10 BA E9   macroPosiciones 03D, 63D, cadeSub2
+                00 B4 09 CD 21                      
+[ 673]    16D4: B4 02 B7 00 B6 04 B2 3F CD 10 B4 09   macroPedirDatos 04D, 63D, cadePedSub, cadeNumSub
+                BA F4 00 CD 21 B4 01 CD 21 2C 30 A2 
+                F8 00                               
+[ 674]    16EE: E9 45 F0                              JMP Comparaciones_secundarias
+[ 675]        :                                       procSubmenu1 ENDP
+[ 676]        :                                       
+[ 677]        :                                       
+[ 678]        :                                       ;--------------------------------------------------------------------
+[ 679]        :                                       
+[ 680]        :                                       CODE ENDS
+[ 681]        :                                       END INICIO ;Fin del segemnto de codigo
+[ 682]        :                                       
+[ 683]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: F1      -   bytes on last page (l.byte)
+0003: 00      -   bytes on last page (h.byte)
+0004: 0D      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 00      -   SP - stack pointer (h.byte)
+0012: 66      -   check sum (l.byte)
+0013: E1      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 68      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 68      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================
