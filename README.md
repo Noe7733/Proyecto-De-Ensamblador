@@ -4,5 +4,7 @@ En este proyecto se da solución a la problematica planteda como proyecto final 
 Este mismo nos deja un valioso aprendizeja sobre la materia misma.
 
 Colabordores:
-<li><a href="https://github.com/Noe7733">@Noe7733</a></li>
-<li><a href="https://github.com/Jeannette-Sachez11">@Jeannette-Sachez11</a></li>
+<li><a href="https://github.com/Noe7733">-Noe7733</a></li>
+<li><a href="https://github.com/alvaraduo">-alvaraduo</a></li>
+<li><a href="https://github.com/Alvaro-najera">-Alvaro-najera</a></li>
+<li><a href="https://github.com/Jeannette-Sachez11">-Jeannette-Sachez11</a></li>
